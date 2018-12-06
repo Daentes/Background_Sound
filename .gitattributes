@@ -1,2 +1,192 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+
+-- author: Daentes
+-- date: 23.04.2017
+
+Background_Sound = {};
+
+function Background_Sound.prerequisitesPresent(specializations)
+    return true;
+end;
+
+function Background_Sound:load(savegame)
+   
+	
+	
+    powerSoundFile = Utils.getFilename("sounds/Ursus1734_Zgrzytanie.wav", self.baseDirectory);
+    self.powerSoundId = createSample("LizardHor12nSound");
+    loadSample(self.powerSoundId, powerSoundFile, false);
+    self.powerPlaying = true;
+
+   
+	
+    ----------------I-------------------------------------------------------------------------------------------------------
+    SeatSoundSoundSoundFile = Utils.getFilename("sounds/Ursus1734_BackgroundSound.wav", self.baseDirectory);
+    self.SeatSoundSound = createSample("SeatSoundSound");
+    loadSample(self.SeatSoundSound, SeatSoundSoundSoundFile, false);	
+	self.averageYTranslation = self.startYTranslation;
+    self.camTranslation = self.startYTranslation;
+    self.maxTranslationPrCycle = 0.00008;
+    self.offsetTranslation = 0;
+    self.offsetAdjustmentTranslation = 0;    
+    if self.wheels[3].repr ~= nil and self.wheels[3].repr ~= nil then
+        local x,y,z = getTranslation(self.wheels[3].repr);
+        local x2,y2,z2 = getTranslation(self.wheels[3].repr);
+
+        self.averageYTranslation = (y + y2)/5;
+    end;    
+    self.camTranslation = self.averageYTranslation;
+	----------------II-------------------------------------------------------------------------------------------------------	
+	BackgroundSoundFile = Utils.getFilename("sounds/seatSound.ogg", self.baseDirectory);
+    self.BackgroundSound = createSample("BackgroundSound");
+    loadSample(self.BackgroundSound, BackgroundSoundFile, false);	
+	self.averageYTranslation = self.startYTranslation;
+    self.cam2Translation = self.startYTranslation;
+    self.maxTranslationPrCycle = 0.00008;
+    self.offsetTranslation = 0;
+    self.offsetAdjustmentTranslation = 0;    
+    if self.wheels[2].repr ~= nil and self.wheels[2].repr ~= nil then
+        local x,y,z = getTranslation(self.wheels[2].repr);
+        local x2,y2,z2 = getTranslation(self.wheels[2].repr);
+        self.averageYTranslation = (y + y2)/5;
+    end;    
+    self.cam2Translation = self.averageYTranslation;
+	----------------III------------------------------------------------------------------------------------------------------	
+	Background2SoundFile = Utils.getFilename("sounds/Ursus1734_BackgroundSound2.wav", self.baseDirectory);
+    self.Background2Sound = createSample("Background2Sound");
+    loadSample(self.Background2Sound, Background2SoundFile, false);	
+	self.averageYTranslation = self.startYTranslation;
+    self.cam3Translation = self.startYTranslation;
+    self.maxTranslationPrCycle = 0.00008;
+    self.offsetTranslation = 0;
+    self.offsetAdjustmentTranslation = 0;    
+    if self.wheels[4].repr ~= nil and self.wheels[4].repr ~= nil then
+        local x,y,z = getTranslation(self.wheels[4].repr);
+        local x2,y2,z2 = getTranslation(self.wheels[4].repr);
+        self.averageYTranslation = (y + y2)/5;
+    end;    
+    self.cam3Translation = self.averageYTranslation;	
+  end;
+function Background_Sound:delete()	
+end;
+function Background_Sound:mouseEvent(posX, posY, isDown, isUp, button)
+end;
+function Background_Sound:keyEvent(unicode, sym, modifier, isDown)
+end;
+function Background_Sound:update(dt)
+
+			
+			
+	
+	 
+	 
+	 
+	if self.isEntered then                   
+    
+    if  Input.isKeyPressed(Input.KEY_backspace)  then
+      playSample(self.powerSoundId, 1.3, 0.1, 0);
+      self.powerPlaying = true;
+    end;
+    
+  else
+    if self.powerPlaying then
+      stopSample(self.powerSoundId);
+      self.powerPlaying = false;
+    end;
+     
+  end;
+	
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+
+----------------I-------------------------------------------------------------------------------------------------------	
+if self.wheels[3].repr ~= nil and self.wheels[3].repr ~= nil then
+        local x,y,z = getTranslation(self.wheels[3].repr);
+        local x2,y2,z2 = getTranslation(self.wheels[4].repr);
+
+        self.averageYTranslation = (y + y2)/2;
+    end;
+    
+    self.playSeatSound = false;
+    if self.camTranslation > self.averageYTranslation then
+        self.camTranslation = self.camTranslation - self.maxTranslationPrCycle * dt;
+        if self.camTranslation < self.averageYTranslation then
+            self.camTranslation = self.averageYTranslation;
+        end;
+    elseif self.camTranslation < self.averageYTranslation then
+        self.camTranslation = self.camTranslation + self.maxTranslationPrCycle * dt;
+        if self.camTranslation > self.averageYTranslation then
+            self.camTranslation = self.averageYTranslation;
+        end;
+        
+        if self.camTranslation < self.averageYTranslation - 0.0002 and self.isEntered then
+            playSample(self.SeatSoundSound,0,0.05,0);
+        end;
+    end;		
+----------------II-------------------------------------------------------------------------------------------------------	
+	if self.wheels[2].repr ~= nil and self.wheels[2].repr ~= nil then
+        local x,y,z = getTranslation(self.wheels[2].repr);
+        local x2,y2,z2 = getTranslation(self.wheels[2].repr);
+
+        self.averageYTranslation = (y + y2)/2;
+    end;
+    
+    self.playBackgroundSound = false;
+    if self.cam2Translation > self.averageYTranslation then
+        self.cam2Translation = self.cam2Translation - self.maxTranslationPrCycle * dt;
+        if self.cam2Translation < self.averageYTranslation then
+            self.cam2Translation = self.averageYTranslation;
+        end;
+    elseif self.cam2Translation < self.averageYTranslation then
+        self.cam2Translation = self.cam2Translation + self.maxTranslationPrCycle * dt;
+        if self.cam2Translation > self.averageYTranslation then
+            self.cam2Translation = self.averageYTranslation;
+        end;
+        
+        if self.cam2Translation < self.averageYTranslation - 0.0003 and self.isEntered then
+            playSample(self.BackgroundSound,1,0.04,0);
+        end;
+    end;
+----------------III------------------------------------------------------------------------------------------------------		
+	if self.wheels[1].repr ~= nil and self.wheels[1].repr ~= nil then
+        local x,y,z = getTranslation(self.wheels[1].repr);
+        local x2,y2,z2 = getTranslation(self.wheels[1].repr);
+
+        self.averageYTranslation = (y + y2)/2;
+    end;
+    
+    self.playBackground2Sound = false;
+    if self.cam3Translation > self.averageYTranslation then
+        self.cam3Translation = self.cam3Translation - self.maxTranslationPrCycle * dt;
+        if self.cam3Translation < self.averageYTranslation then
+            self.cam3Translation = self.averageYTranslation;
+        end;
+    elseif self.cam3Translation < self.averageYTranslation then
+        self.cam3Translation = self.cam3Translation + self.maxTranslationPrCycle * dt;
+        if self.cam3Translation > self.averageYTranslation then
+            self.cam3Translation = self.averageYTranslation;
+        end;
+        
+        if self.cam3Translation < self.averageYTranslation - 0.0003 and self.isEntered then
+            playSample(self.Background2Sound,1,0.03,0);
+        end;
+    end;
+	
+	
+	
+
+
+end;
+function Background_Sound:draw()
+end;
+function Background_Sound:setVehicleRpmUp(dt, isActive)	
+end;
+function Background_Sound:onDeactivate()	
+end;
+
+
+
